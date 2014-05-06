@@ -28,7 +28,7 @@ public class Test extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.board = new Board();
 		this.add(board);
-        images = SpriteSheetReader.readImage("data\\img\\BUTTERFLY01.png", 6,3, 500, 500);
+        images = SpriteSheetReader.readImage("data\\img\\Archon.png", 40,8, 500, 500);
         System.out.println(images.size());
 	}
 	
