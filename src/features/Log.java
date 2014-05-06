@@ -21,6 +21,10 @@ import utilities.FileUtility;
  */
 public class Log {
 
+	private static final int STD_OUT = 0;
+	private static final int FILE = 1;
+	private static final int MODE = STD_OUT;
+
 	private static final SimpleDateFormat DEFAULT_TIME = new SimpleDateFormat("HH:mm:ss");
 	private static final SimpleDateFormat DEFAULT_DATE = new SimpleDateFormat("dd/MM/yyyy",
 			Locale.ENGLISH);
@@ -34,9 +38,11 @@ public class Log {
 	}
 
 	/**
-	 * Write log event of an exception
-	 * Convert the exception stack trace into string first.
-	 * @param e exception caught
+	 * Write log event of an exception Convert the exception stack trace into
+	 * string first.
+	 * 
+	 * @param e
+	 *            exception caught
 	 */
 	public static void writeLog(Throwable e) {
 		final Writer result = new StringWriter();
@@ -47,7 +53,9 @@ public class Log {
 
 	/**
 	 * Write content to a log file using FileUtility
-	 * @param content content that will be written
+	 * 
+	 * @param content
+	 *            content that will be written
 	 */
 	public static void writeLog(String content) {
 		try {
@@ -62,6 +70,10 @@ public class Log {
 		toWrite.append(DEFAULT_DATE.format(new Date(now.getTimeInMillis())));
 		toWrite.append("\n").append(content).append("\n\n");
 
-		FileUtility.writeToFile(toWrite, LOG_FILE, true);
+		if (MODE == FILE) {
+			FileUtility.writeToFile(toWrite, LOG_FILE, true);
+		} else if (MODE == STD_OUT) {
+			System.out.println(toWrite);
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package curse;
 
-public class CurseContainer {
+import java.util.HashSet;
 
+public class CurseContainer {
+	private HashSet<Curse> content;
 }

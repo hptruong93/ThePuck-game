@@ -1,5 +1,7 @@
 package ai.skillAI;
 
-public class SkillAI {
+import ai.AI;
+
+public class SkillAI extends AI {
 
 }

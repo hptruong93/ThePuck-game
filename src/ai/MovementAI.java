@@ -1,5 +1,5 @@
 package ai;
 
-public class MovementAI {
+public class MovementAI extends AI {
 
 }
