@@ -1,5 +1,7 @@
 package units.untargetable.passiveInteractive;
 
-public class AOE {
+import units.untargetable.Untargetable;
+
+public class AOE extends Untargetable {
 
 }

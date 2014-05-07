@@ -1,5 +1,7 @@
 package units.untargetable.passiveInteractive.projectile;
 
-public abstract class Projectile {
+import units.untargetable.Untargetable;
+
+public abstract class Projectile extends Untargetable {
 
 }
