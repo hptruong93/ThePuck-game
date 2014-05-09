@@ -1,63 +1,76 @@
 package testing;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 
-import utilities.SpriteSheetReader;
+public class Test {
 
-public class Test extends JFrame {
+	private static ArrayList<Integer> numbers;
+	private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+	private static final Lock read = lock.readLock();
+	private static final Lock write = lock.writeLock();
 	
-	Board board;
-	ArrayList<Image> images;
-	int index;
-	
-	public Test() {
-		initComponents();
-		this.setVisible(true);
+	static {
+		numbers = new ArrayList<Integer>();
+		for (int i = 0; i < 100; i++) {
+			numbers.add(i);
+		}
+	}
+
+	private static void readAll(String name) {
+		read.lock();
+		try {
+			for (Integer a : numbers) {
+//				if (!name.equals("sub")) {
+//					readAll("sub");
+//				}
+				System.out.println("Name is " + name +  " --> " + a);
+			}
+		} finally {
+			read.unlock();
+		}
 	}
 	
-	private void initComponents() {
-		setSize(1000, 1000);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.board = new Board();
-		this.add(board);
-        images = SpriteSheetReader.readImage("data\\img\\Archon.png", 40,8, 500, 500);
-        System.out.println(images.size());
+	private static void writeExtra() {
+		write.lock();
+		try {
+			for (int i = 100; i < 200; i++) {
+				numbers.add(i);
+			}
+		} finally {
+			write.unlock();
+		}
 	}
 	
 	public static void main(String[] args) {
-		Test t = new Test();
-		while (true) {
-		t.board.repaint();
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Reader reader = new Reader("First");
+		Reader reader2 = new Reader("Second");
+		Writer write = new Writer();
+		
+		reader.start();
+		write.start();
+	}
+	
+	private static class Reader extends Thread {
+		
+		private final String name;
+		
+		private Reader(String name) {
+			this.name = name;
 		}
+		
+		@Override
+		public void run() {
+			readAll(name);
 		}
 	}
 	
-	private class Board extends JComponent {
-		
+	private static class Writer extends Thread {
 		@Override
-		public void paint(Graphics g) {
-			Graphics2D a = (Graphics2D) g;
-			a.setPaint(Color.BLUE);
-			a.fill(new Rectangle2D.Double(-500, -500, 1000, 1000));
-			
-			int width = images.get(index).getWidth(null);
-			int height = images.get(index).getHeight(null);
-			
-			a.drawImage(images.get(index), 100, 100, 100+width, 100+height, 0, 0, width, height, null);
-			index = (index + 1) % images.size();
+		public void run() {
+			writeExtra();
 		}
 	}
 }

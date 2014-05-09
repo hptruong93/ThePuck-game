@@ -4,37 +4,70 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import main.userInterface.FrameMaster;
-import units.targetable.immoveable.Building;
-import units.targetable.moveable.Moveable;
-import units.untargetable.passiveInteractive.AOE;
-import units.untargetable.visualEffect.VisualEffect;
+import units.immoveable.Building;
+import units.moveable.Moveable;
+import units.moveable.untargetable.passiveInteractive.AOE;
+import units.moveable.untargetable.visualEffect.VisualEffect;
+import features.Log;
 
 public class GameGraphics implements Runnable {
 
+	/**
+	 * Redraw the whole map. This should lead directly to the plotAll() method
+	 * below to be invoked.
+	 */
 	@Override
 	public void run() {
 		FrameMaster.getGameScreen().repaintBoard();
 	}
-	
+
+	/**
+	 * Plot all elements on the map. Access to the resources from GameMaster
+	 * must be thread-safe.
+	 * 
+	 * @param g
+	 *            graphics of the component used to draw the element.
+	 */
 	public static void plotAll(Graphics g) {
 		Graphics2D a = (Graphics2D) g;
-		
-		for (VisualEffect effect : GameMaster.getVisualEffects()) {
-			effect.plot(a);
-		}
-		
-		for (AOE aoe : GameMaster.getAOEs()) {
-			aoe.plot(a);
-		}
-		
-		for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
-			for (Moveable move : GameMaster.getMoveable(i)) {
-				move.plot(a);
+
+		try {
+
+			try {
+				for (VisualEffect effect : GameMaster.getVisualEffects()) {
+					effect.plot(a);
+				}
+			} finally {
+				GameMaster.releaseVisualEffect();
 			}
-			
-			for (Building building : GameMaster.getBuildings(i)) {
-				building.plot(a);
+
+			try {
+				for (AOE aoe : GameMaster.getAOEs()) {
+					aoe.plot(a);
+				}
+			} finally {
+				GameMaster.releaseAOEs();
 			}
+
+			for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
+				try {
+					for (Moveable move : GameMaster.getLivings(i)) {
+						move.plot(a);
+					}
+				} finally {
+					GameMaster.releaseLiving(i);
+				}
+
+				try {
+					for (Building building : GameMaster.getBuildings(i)) {
+						building.plot(a);
+					}
+				} finally {
+					GameMaster.releaseBuilding(i);
+				}
+			}
+		} catch (Exception e) {
+			Log.writeLog(e);
 		}
 	}
 }

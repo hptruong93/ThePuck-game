@@ -1,5 +1,6 @@
 package utilities.geometry;
 
+import main.engineInterface.GameConfig;
 import utilities.Util;
 
 /**
@@ -191,6 +192,68 @@ public class Point {
 		double currentAngle = pivot.angle(this);
 		currentAngle += angle;
 		return pivot.getFrontPoint(currentAngle, pivot.distance(this));
+	}
+	
+	/**
+	 * Create a point on a real map from a point in the minimap. "this" point will be
+	 * considered as a point on minimap for conversion.
+	 * @return a point representing this point in the real map. 
+	 */
+	public Point miniToReal() {
+		return new Point(x * GameConfig.SCALE_X, y * GameConfig.SCALE_Y);
+	}
+	
+	/**
+	 * Create a point on a mini map from a point in the real map. "this" point will be
+	 * considered as a point on real map for conversion.
+	 * @return a point representing this point in the minimap. 
+	 */
+	public Point realToMini() {
+		return new Point(x / GameConfig.SCALE_X, y / GameConfig.SCALE_Y);
+	}
+	
+	/**
+	 * Create a point on a mini map from a point on the display. "this" point will be
+	 * considered as a point on display for conversion.
+	 * @param focus the current focus on the minimap
+	 * @return a point representing this point in the minimap. 
+	 */
+	public Point displayToMini(Point focus) {
+		Point output = new Point(x / GameConfig.SCALE_MINI_X + focus.x - GameConfig.FOCUS_WIDTH/2, 
+                y / GameConfig.SCALE_MINI_Y + focus.y - GameConfig.FOCUS_HEIGHT/2);
+		return output;
+	}
+	
+	/**
+	 * Create a point on display from a point on the minimap. "this" point will be
+	 * considered as a point on minimap for conversion.
+	 * @param focus the current focus on the minimap
+	 * @return a point representing this point in the minimap. 
+	 */
+	public Point miniToDisplay(Point focus) {
+		Point output = new Point((x - focus.x + GameConfig.FOCUS_WIDTH/2) * GameConfig.SCALE_MINI_X,
+				                 (y - focus.y + GameConfig.FOCUS_HEIGHT/2) * GameConfig.SCALE_MINI_Y);
+		return output;
+	}
+	
+	/**
+	 * Create a point on display from a point on the real map. "this" point will be
+	 * considered as a point on real map for conversion.
+	 * @param focus the current focus on the minimap
+	 * @return a point representing this point on the display. 
+	 */
+	public Point realToDisplay(Point focus) {
+		return realToMini().miniToDisplay(focus);
+	}
+	
+	/**
+	 * Create a point on the real map from a point on display. "this" point will be
+	 * considered as a point on display for conversion.
+	 * @param focus the current focus on the minimap
+	 * @return a point representing this point on the real map. 
+	 */
+	public Point displayToReal(Point focus) {
+		return displayToMini(focus).miniToReal();
 	}
 	
 	/**

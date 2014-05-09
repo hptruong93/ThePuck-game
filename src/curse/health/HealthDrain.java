@@ -1,6 +1,6 @@
 package curse.health;
 
-import units.targetable.moveable.Living;
+import units.moveable.targetable.livings.Living;
 import curse.Curse;
 
 public class HealthDrain extends Curse {

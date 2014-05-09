@@ -1,6 +1,6 @@
 package ai;
 
-import units.targetable.moveable.Living;
+import units.moveable.targetable.livings.Living;
 
 public class AI {
 	protected Living owner;

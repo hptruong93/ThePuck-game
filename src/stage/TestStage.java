@@ -2,8 +2,8 @@ package stage;
 
 import java.util.ArrayList;
 
-import units.targetable.moveable.Living;
-import units.targetable.moveable.livings.boss.Archon;
+import units.moveable.targetable.livings.Living;
+import units.moveable.targetable.livings.boss.Archon;
 
 public class TestStage extends Stage {
 

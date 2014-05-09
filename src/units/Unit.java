@@ -12,6 +12,6 @@ public abstract class Unit {
 	protected VisualAgent visualAgent;
 	
 	public void plot(Graphics2D a) {
-		visualAgent.plot(a);
+		visualAgent.plot(a, this);
 	}
 }

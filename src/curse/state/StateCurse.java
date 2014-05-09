@@ -1,6 +1,6 @@
 package curse.state;
 
-import units.targetable.moveable.Living;
+import units.moveable.targetable.livings.Living;
 import curse.Curse;
 
 public abstract class StateCurse extends Curse {
