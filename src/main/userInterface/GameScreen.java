@@ -21,6 +21,8 @@ public class GameScreen extends JFrame {
 		
 		board = new Board();
 		this.add(board);
+		
+		board.addMouseListener(new MouseResponse(board));
 	}
 
 	public void repaintBoard() {

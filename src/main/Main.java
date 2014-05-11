@@ -2,6 +2,7 @@ package main;
 
 import java.util.concurrent.TimeUnit;
 
+import main.engineInterface.GameConfig;
 import main.engineInterface.GameGraphics;
 import main.engineInterface.GameLogic;
 import main.engineInterface.GameMaster;
@@ -19,9 +20,9 @@ public class Main {
 		/**
 		 * Start testing session
 		 */
-		Archon a = new Archon(new Point(50, 50), 100, 0.02, 0.001);
+		Archon a = new Archon(new Point(50, 50), 100, 0.1, 0.005);
 		a.setDestination(new Point(100, 100));
-		GameMaster.addLiving(0, a);
+		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
 		/**
 		 * End testing session

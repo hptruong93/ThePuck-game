@@ -32,7 +32,6 @@ public class GameGraphics implements Runnable {
 		Graphics2D a = (Graphics2D) g;
 
 		try {
-
 			try {
 				for (VisualEffect effect : GameMaster.getVisualEffects()) {
 					effect.plot(a);

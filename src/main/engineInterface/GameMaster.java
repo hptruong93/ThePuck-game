@@ -66,6 +66,8 @@ public class GameMaster {
 		}
 	}
 
+	
+	
 	/**********************************************************************************/
 	/**
 	 * These are accessors to the data stored in the system. All methods have to be thread-safe.

@@ -4,9 +4,21 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 public class GameConfig {
-	public static final int SIDE_COUNT = 2;
-	public static final int AI_SIDE = 1;
 	
+	/*****************Players configuration********************************************/
+	public static final int SIDE_COUNT = 2;
+	public static final int AI_SIDE = 0;
+	private static int playerID = 1;
+	
+	public static void setPlayerID(int newID) {
+		playerID = newID;
+	}
+	
+	public static int getPlayerID() {
+		return playerID;
+	}
+	
+	/*****************Graphics configuration*******************************************/
 	public static final Dimension SCREEN = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int MAP_WIDTH = 1600;
 	public static final int MAP_HEIGHT = (int) (MAP_WIDTH * 9.0 /16);

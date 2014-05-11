@@ -19,6 +19,7 @@ import utilities.geometry.Point;
  */
 public abstract class VisualAgent {
 	
+	private static final int DEFAULT_SIZE = 100;
 	protected int index;
 	
 	/**
@@ -35,13 +36,15 @@ public abstract class VisualAgent {
 		Point display = owner.position().realToDisplay(new Point (50, 50));
 		AffineTransform transform = AffineTransform.getTranslateInstance(display.getX(), display.getY());
 		transform.rotate(owner.movingAngle());
-		
 		a.transform(transform);
+
+		AffineTransform flip = new AffineTransform();
+		if (owner.movingAngle() > Math.PI/2 && owner.movingAngle() < 3 * Math.PI / 2) {
+			flip.scale(1, -1);
+		}
 		
-		int topLeftX = - width/2;
-		int topLeftY = - height/2;
-		
-		a.drawImage(next, topLeftX, topLeftY, topLeftX + width, topLeftY + height, 0, 0, width, height, null);
+		flip.translate(-width / 2 , - height / 2);
+		a.drawImage(next, flip, null);
 	}
 	
 	protected abstract Image getNextRep();
@@ -50,8 +53,8 @@ public abstract class VisualAgent {
 	
 	static {
 		INIT_CONFIG = new HashMap<String, InitConfiguration>();
-		INIT_CONFIG.put(CockroachVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Creep.png", 16, 4, 500, 500));
-		INIT_CONFIG.put(ArchonVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Archon.png", 40, 8, 500, 500));
+		INIT_CONFIG.put(CockroachVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Creep.png", 16, 4, DEFAULT_SIZE, DEFAULT_SIZE));
+		INIT_CONFIG.put(ArchonVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Archon.png", 40, 8, DEFAULT_SIZE, DEFAULT_SIZE));
 	}
 	
 	protected static class InitConfiguration {

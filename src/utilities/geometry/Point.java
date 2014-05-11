@@ -28,6 +28,15 @@ public class Point {
 	}
 
 	/**
+	 * Constructor
+	 * @param p java.awt.Point p
+	 */
+	public Point (java.awt.Point p) {
+		this.x = p.getX();
+		this.y = p.getY();
+	}
+	
+	/**
 	 * 
 	 * @param position
 	 *            current position coordinate
