@@ -3,10 +3,13 @@ package main.engineInterface;
 import units.moveable.Moveable;
 import units.moveable.untargetable.passiveInteractive.AOE;
 import units.moveable.untargetable.passiveInteractive.projectile.Projectile;
+import ai.PathPlanner;
 import features.Log;
 
 public class GameLogic implements Runnable {
 
+	private static final int PROCESSING_RATE = 50;
+	
 	/**
 	 * Process all the movements on the map. This includes
 	 * <p>
@@ -29,7 +32,7 @@ public class GameLogic implements Runnable {
 			for (int side = 0; side < GameConfig.SIDE_COUNT; side++) {
 				try {
 					for (Moveable moveable : GameMaster.getLivings(side)) {
-						moveable.move();
+						moveable.move(PROCESSING_RATE, PathPlanner.NORMAL_MOVE);
 					}
 				} finally {
 					GameMaster.releaseLiving(side);
@@ -41,7 +44,7 @@ public class GameLogic implements Runnable {
 			 */
 			try {
 				for (Projectile projectile : GameMaster.getProjectiles()) {
-					projectile.move();
+					projectile.move(PROCESSING_RATE, PathPlanner.NORMAL_MOVE);
 				}
 			} finally {
 				GameMaster.releaseProjectiles();
@@ -52,7 +55,7 @@ public class GameLogic implements Runnable {
 			 */
 			try {
 				for (AOE aoe : GameMaster.getAOEs()) {
-					aoe.move();
+					aoe.move(PROCESSING_RATE, PathPlanner.NORMAL_MOVE);
 				}
 			} finally {
 				GameMaster.releaseAOEs();

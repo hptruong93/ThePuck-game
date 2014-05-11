@@ -231,11 +231,11 @@ public class Clock implements Runnable {
 	   private static class ScheduledFixedRateTask implements ScheduledTasks {
 
 	      private final Runnable task;
-	      private ScheduledFuture scheduleFuture;
+	      private ScheduledFuture<?> scheduleFuture;
 	      private final int runRate;
 	      private final TimeUnit unit;
 
-	      private ScheduledFixedRateTask(Runnable task, ScheduledFuture scheduleFuture, int runRate, TimeUnit unit) {
+	      private ScheduledFixedRateTask(Runnable task, ScheduledFuture<?> scheduleFuture, int runRate, TimeUnit unit) {
 	         this.task = task;
 	         this.runRate = runRate;
 	         this.scheduleFuture = scheduleFuture;
@@ -264,11 +264,11 @@ public class Clock implements Runnable {
 	    */
 	   private static class ScheduledFixedDelayTask implements ScheduledTasks {
 	      private final Runnable task;
-	      private ScheduledFuture scheduleFuture;
+	      private ScheduledFuture<?> scheduleFuture;
 	      private final int delay;
 	      private final TimeUnit unit;
 
-	      private ScheduledFixedDelayTask(Runnable task, ScheduledFuture scheduleFuture, int delay, TimeUnit unit) {
+	      private ScheduledFixedDelayTask(Runnable task, ScheduledFuture<?> scheduleFuture, int delay, TimeUnit unit) {
 	         this.task = task;
 	         this.delay = delay;
 	         this.scheduleFuture = scheduleFuture;

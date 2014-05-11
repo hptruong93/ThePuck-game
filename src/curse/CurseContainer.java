@@ -3,7 +3,7 @@ package curse;
 import java.awt.Graphics2D;
 import java.util.HashSet;
 
-import units.moveable.targetable.livings.Living;
+import units.moveable.livings.Living;
 import agent.VisualAgent;
 
 public class CurseContainer {

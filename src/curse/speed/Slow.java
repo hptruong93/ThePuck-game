@@ -1,6 +1,6 @@
 package curse.speed;
 
-import units.moveable.targetable.livings.Living;
+import units.moveable.livings.Living;
 import curse.Curse;
 
 public class Slow extends Curse {

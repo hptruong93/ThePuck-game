@@ -2,19 +2,46 @@ package agent;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 
 import units.Unit;
+import utilities.geometry.Point;
 
+/**
+ * Base class for any visual agent.
+ * Any agent with different plotting method may override plot() method.
+ * This class also contains all initialization of all VisualAgents through
+ * HashMap<[class_name], [init_configuration]>
+ * @see class InitConfiguration
+ * @author VDa
+ *
+ */
 public abstract class VisualAgent {
 	
 	protected int index;
 	
+	/**
+	 * Base plotting method. Visual aspects of the unit should be stored within the Visual Agent, while
+	 * the physical aspects should be stored within the unit object.
+	 * @param a graphics that will be used by the agent to plot.
+	 * @param owner the unit that will be plot
+	 */
 	public void plot(Graphics2D a, Unit owner) {
 		Image next = getNextRep();
 		int width = next.getWidth(null);
 		int height = next.getHeight(null);
-		a.drawImage(next, 100, 100, 100+width, 100+height, 0, 0, width, height, null);
+		
+		Point display = owner.position().realToDisplay(new Point (50, 50));
+		AffineTransform transform = AffineTransform.getTranslateInstance(display.getX(), display.getY());
+		transform.rotate(owner.movingAngle());
+		
+		a.transform(transform);
+		
+		int topLeftX = - width/2;
+		int topLeftY = - height/2;
+		
+		a.drawImage(next, topLeftX, topLeftY, topLeftX + width, topLeftY + height, 0, 0, width, height, null);
 	}
 	
 	protected abstract Image getNextRep();

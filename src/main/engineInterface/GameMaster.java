@@ -1,11 +1,11 @@
 package main.engineInterface;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import units.immoveable.Building;
-import units.moveable.targetable.livings.Living;
-import units.moveable.targetable.livings.boss.Archon;
+import units.moveable.livings.Living;
 import units.moveable.untargetable.passiveInteractive.AOE;
 import units.moveable.untargetable.passiveInteractive.projectile.Projectile;
 import units.moveable.untargetable.visualEffect.VisualEffect;
@@ -26,46 +26,44 @@ public class GameMaster {
 	 * at the beginning. There is no need to initialize them
 	 */
 	
-	private static final ArrayList<VisualEffect> visualEffects;
+	private static final HashSet<VisualEffect> visualEffects;
 	private static final ReentrantReadWriteLock visualEffectsLock; 
 	
-	private static final ArrayList<Projectile> projectiles;
+	private static final HashSet<Projectile> projectiles;
 	private static final ReentrantReadWriteLock projectilesLock;
 	
-	private static final ArrayList<AOE> aoes;
+	private static final HashSet<AOE> aoes;
 	private static final ReentrantReadWriteLock aoesLock;
 
-	private static final ArrayList<ArrayList<Building>> buildings;
+	private static final ArrayList<HashSet<Building>> buildings;
 	private static final ArrayList<ReentrantReadWriteLock> buildingsLocks;
 	
-	private static final ArrayList<ArrayList<Living>> livings;
+	private static final ArrayList<HashSet<Living>> livings;
 	private static final ArrayList<ReentrantReadWriteLock> livingsLock; 
 	
 	static {
-		visualEffects = new ArrayList<VisualEffect>();
+		visualEffects = new HashSet<VisualEffect>();
 		visualEffectsLock = new ReentrantReadWriteLock();
 		
-		projectiles = new ArrayList<Projectile>();
+		projectiles = new HashSet<Projectile>();
 		projectilesLock = new ReentrantReadWriteLock();
 		
-		aoes = new ArrayList<AOE>();
+		aoes = new HashSet<AOE>();
 		aoesLock = new ReentrantReadWriteLock();
 		
-		buildings = new ArrayList<ArrayList<Building>>();
+		buildings = new ArrayList<HashSet<Building>>();
 		buildingsLocks = new ArrayList<ReentrantReadWriteLock>();
 		
-		livings = new ArrayList<ArrayList<Living>>();
+		livings = new ArrayList<HashSet<Living>>();
 		livingsLock = new ArrayList<ReentrantReadWriteLock>();
 		
 		for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
-			buildings.add(new ArrayList<Building>());
+			buildings.add(new HashSet<Building>());
 			buildingsLocks.add(new ReentrantReadWriteLock());
 			
-			livings.add(new ArrayList<Living>());
+			livings.add(new HashSet<Living>());
 			livingsLock.add(new ReentrantReadWriteLock());
 		}
-		
-		livings.get(0).add(new Archon());
 	}
 
 	/**********************************************************************************/
@@ -75,6 +73,8 @@ public class GameMaster {
 	 * 
 	 * Write lock for writing process is already implemented. Client does not have to take
 	 * care of locks when write. The provided interface will cover it.
+	 * 
+	 * Remove lock for removing process is also implemented. Usage is similar to writing process.
 	 * 
 	 * Read process is more complicated and should be used with care. Procedure of reading a resource
 	 * is presented below:
@@ -88,7 +88,7 @@ public class GameMaster {
 	 */
 	/************Visual Effects*****************/
 	
-	public static ArrayList<VisualEffect> getVisualEffects() {
+	public static HashSet<VisualEffect> getVisualEffects() {
 		visualEffectsLock.readLock().lock();
 		return visualEffects;
 	}
@@ -106,9 +106,18 @@ public class GameMaster {
 		}
 	}
 	
+	public static void removeVisualEffect(VisualEffect toBeRemoved) {
+		visualEffectsLock.writeLock().lock();
+		try {
+			visualEffects.remove(toBeRemoved);
+		} finally {
+			visualEffectsLock.writeLock().unlock();	
+		}
+	}
+	
 	/**************Projectiles******************/
 	
-	public static ArrayList<Projectile> getProjectiles() {
+	public static HashSet<Projectile> getProjectiles() {
 		projectilesLock.readLock().lock();
 		return projectiles;
 	}
@@ -126,9 +135,18 @@ public class GameMaster {
 		}
 	}
 
+	public static void removeProjectile(Projectile toBeRemoved) {
+		projectilesLock.writeLock().lock();
+		try {
+			projectiles.remove(toBeRemoved);
+		} finally {
+			projectilesLock.writeLock().unlock();	
+		}
+	}
+	
 	/**************AOEs*************************/
 	
-	public static ArrayList<AOE> getAOEs() {
+	public static HashSet<AOE> getAOEs() {
 		aoesLock.readLock().lock();
 		return aoes;
 	}
@@ -146,11 +164,19 @@ public class GameMaster {
 		}
 	}
 	
+	public static void removeAOE(AOE toBeRemoved) {
+		aoesLock.writeLock().lock();
+		try {
+			aoes.remove(toBeRemoved);
+		} finally {
+			aoesLock.writeLock().unlock();	
+		}
+	}
 	
 	/**********************************************************************************/
 	/**************Livings**********************/
 	
-	public static ArrayList<Living> getLivings(int side) {
+	public static HashSet<Living> getLivings(int side) {
 		livingsLock.get(side).readLock().lock();
 		return livings.get(side);
 	}
@@ -168,9 +194,18 @@ public class GameMaster {
 		}
 	}
 	
+	public static void removeLiving(int side, Living toBeRemoved) {
+		livingsLock.get(side).writeLock().lock();
+		try {
+			livings.get(side).remove(toBeRemoved);
+		} finally {
+			livingsLock.get(side).writeLock().unlock();	
+		}
+	}
+	
 	/**************Buidlings********************/
 	
-	public static ArrayList<Building> getBuildings(int side) {
+	public static HashSet<Building> getBuildings(int side) {
 		buildingsLocks.get(side).readLock().lock();
 		return buildings.get(side);
 	}
@@ -185,6 +220,15 @@ public class GameMaster {
 			buildings.get(side).add(newComer);
 		} finally {
 			buildingsLocks.get(side).writeLock().unlock();
+		}
+	}
+	
+	public static void removeBuilding(int side, Building toBeRemoved) {
+		buildingsLocks.get(side).writeLock().lock();
+		try {
+			buildings.get(side).remove(toBeRemoved);
+		} finally {
+			buildingsLocks.get(side).writeLock().unlock();	
 		}
 	}
 } 
