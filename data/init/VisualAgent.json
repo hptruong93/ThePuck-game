@@ -1,0 +1,34 @@
+{
+	"ArchonVisualAgent": {
+		"path": "data\\img\\Archon.png",
+		"instances": 40,
+		"columnNumber": 8,
+		"initialAngle": 0
+	},
+	"CockroachVisualAgent": {
+		"path": "data\\img\\Creep.png",
+		"instances": 16,
+		"columnNumber": 4,
+		"initialAngle": -90
+	},
+	"PuckVisualAgent": {
+		"path": "data\\img\\ThePuck.png",
+		"instances": 6,
+		"columnNumber": 3,
+		"initialAngle": 90
+	},
+	"RyskorVisualAgent": {
+		"path": "data\\img\\Scorpion.png",
+		"instances": 10,
+		"columnNumber": 4,
+		"initialAngle": 225
+	},
+	"SarcophagidaeVisualAgent": {
+		"path": "data\\img\\Dragon.png",
+		"instances": 20,
+		"columnNumber": 20,
+		"initialAngle": 0,
+		"width": 200,
+		"height": 200
+	},
+}

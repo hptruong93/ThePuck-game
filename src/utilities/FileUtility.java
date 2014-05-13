@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import argo.jdom.JdomParser;
+import argo.jdom.JsonRootNode;
+import argo.saj.InvalidSyntaxException;
+import features.Log;
+
 /**
  * Provide file reading and writing utilities
  * This is a static class. No instance should be created
@@ -25,10 +30,11 @@ public class FileUtility {
 	}
 	
 	/**
-	 * Read a plain text file
+	 * Read a plain text file.
 	 * @param file file that will be read
+	 * @return StringBuffer the read result.
 	 */
-	public static void readFromFile(File file) {
+	public static StringBuffer readFromFile(File file) {
 		StringBuffer output = new StringBuffer("");
 		
 		FileReader fr = null;
@@ -47,6 +53,7 @@ public class FileUtility {
 	        }
 			
 			br.close();
+			
 		} catch (IOException e) {
 			Logger.getLogger(FileUtility.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
@@ -56,6 +63,7 @@ public class FileUtility {
 				Logger.getLogger(FileUtility.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
+		return output;
 	}
 
 	/**
@@ -81,6 +89,21 @@ public class FileUtility {
 			} catch (IOException ex) {
 				Logger.getLogger(FileUtility.class.getName()).log(Level.SEVERE, null, ex);
 			}
+		}
+	}
+	
+	/**
+	 * Read a JSON file and return a JSON object
+	 * @param file the file that will be read
+	 * @return the root node of the JSON object
+	 */
+	public static JsonRootNode readJSON(File file) {
+		StringBuffer strings = readFromFile(file);
+		try {
+			return new JdomParser().parse(strings.toString());
+		} catch (InvalidSyntaxException e) {
+			Log.writeLog(e);
+			return null;
 		}
 	}
 }

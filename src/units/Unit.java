@@ -30,7 +30,6 @@ public abstract class Unit {
 		return movingAngle;
 	}
 	
-	
 	/**********************************************/
 	
 	public void setPosition(Point position) {

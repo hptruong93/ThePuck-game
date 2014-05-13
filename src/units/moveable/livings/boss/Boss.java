@@ -4,11 +4,10 @@ import units.moveable.livings.Living;
 import utilities.geometry.Point;
 
 
-public class Boss extends Living {
+public abstract class Boss extends Living {
 
 	public Boss(Point position, double health, double speed, double turnRate) {
 		super(position, health, speed, turnRate);
 		// TODO Auto-generated constructor stub
 	}
-
 }

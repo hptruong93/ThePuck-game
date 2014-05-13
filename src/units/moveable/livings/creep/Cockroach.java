@@ -11,5 +11,4 @@ public class Cockroach extends Creep {
 		this.visualAgent = new CockroachVisualAgent();
 		// TODO Auto-generated constructor stub
 	}
-
 }

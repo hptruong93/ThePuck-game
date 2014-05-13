@@ -7,7 +7,7 @@ import main.engineInterface.GameGraphics;
 import main.engineInterface.GameLogic;
 import main.engineInterface.GameMaster;
 import main.userInterface.FrameMaster;
-import units.moveable.livings.boss.Archon;
+import units.moveable.livings.boss.Sarcophagidae;
 import utilities.geometry.Point;
 import features.Clock;
 
@@ -20,8 +20,7 @@ public class Main {
 		/**
 		 * Start testing session
 		 */
-		Archon a = new Archon(new Point(50, 50), 100, 0.1, 0.005);
-		a.setDestination(new Point(100, 100));
+		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.02, 0.005);
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
 		/**

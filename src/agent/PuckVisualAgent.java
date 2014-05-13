@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import units.Unit;
 import utilities.SpriteSheetReader;
 
-public class ArchonVisualAgent extends VisualAgent {
-
+public class PuckVisualAgent extends VisualAgent {
 	private static ArrayList<Image> images;
-	
+
 	static {
-		InitConfiguration init = VisualAgent.INIT_CONFIG.get(ArchonVisualAgent.class.getSimpleName());
-		images = SpriteSheetReader.readImage(init.loadPath(), init.instances(),init.column(), init.width(), init.height(), init.initialAngle());
+		InitConfiguration init = VisualAgent.INIT_CONFIG.get(PuckVisualAgent.class.getSimpleName());
+		images = SpriteSheetReader.readImage(init.loadPath(), init.instances(), init.column(), init.width(), init.height(), init.initialAngle());
 	}
-	
+
 	@Override
 	protected Image getNextRep(Unit owner) {
 		index = (index + 1) % images.size();

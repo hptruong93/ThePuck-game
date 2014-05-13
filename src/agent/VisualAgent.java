@@ -3,10 +3,15 @@ package agent;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.util.HashMap;
 
 import units.Unit;
+import utilities.FileUtility;
 import utilities.geometry.Point;
+import argo.jdom.JsonNode;
+import argo.jdom.JsonRootNode;
+import argo.jdom.JsonStringNode;
 
 /**
  * Base class for any visual agent.
@@ -19,6 +24,7 @@ import utilities.geometry.Point;
  */
 public abstract class VisualAgent {
 	
+	private static final String INIT_FILE = "data\\init\\VisualAgent.json";
 	private static final int DEFAULT_SIZE = 100;
 	protected int index;
 	
@@ -29,7 +35,7 @@ public abstract class VisualAgent {
 	 * @param owner the unit that will be plot
 	 */
 	public void plot(Graphics2D a, Unit owner) {
-		Image next = getNextRep();
+		Image next = getNextRep(owner);
 		int width = next.getWidth(null);
 		int height = next.getHeight(null);
 		
@@ -47,27 +53,54 @@ public abstract class VisualAgent {
 		a.drawImage(next, flip, null);
 	}
 	
-	protected abstract Image getNextRep();
+	protected abstract Image getNextRep(Unit owner);
 	
 	public static final HashMap<String, InitConfiguration> INIT_CONFIG;
 	
 	static {
 		INIT_CONFIG = new HashMap<String, InitConfiguration>();
-		INIT_CONFIG.put(CockroachVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Creep.png", 16, 4, DEFAULT_SIZE, DEFAULT_SIZE));
-		INIT_CONFIG.put(ArchonVisualAgent.class.getSimpleName(), new InitConfiguration("data\\img\\Archon.png", 40, 8, DEFAULT_SIZE, DEFAULT_SIZE));
+		JsonRootNode root = FileUtility.readJSON(new File(INIT_FILE));
+		for (JsonStringNode node : root.getFields().keySet()) {
+			INIT_CONFIG.put(node.getText(), new InitConfiguration(root.getFields().get(node)));
+		}
 	}
 	
 	protected static class InitConfiguration {
 		
 		private final int instances, column, width, height;
+		private final double initialAngle;
 		private final String loadPath;
 		
-		private InitConfiguration(String loadPath, int instances, int column, int width, int height) {
+		private InitConfiguration(JsonNode info) {
+			this.instances = Integer.parseInt(info.getNumberValue("instances"));
+			this.column = Integer.parseInt(info.getNumberValue("columnNumber"));
+			
+			int tempWidth, tempHeight;
+			try {
+				tempWidth = Integer.parseInt(info.getNumberValue("width"));
+				tempHeight = Integer.parseInt(info.getNumberValue("height"));
+			} catch (Exception e) {
+				tempWidth = DEFAULT_SIZE;
+				tempHeight = DEFAULT_SIZE;
+			}
+			
+			this.width = tempWidth;
+			this.height = tempHeight;
+			this.loadPath = info.getStringValue("path");
+			this.initialAngle = Math.toRadians(Double.parseDouble(info.getNumberValue("initialAngle")));
+		}
+		
+		private InitConfiguration(String loadPath, int instances, int column, int width, int height, double initialAngle) {
 			this.instances = instances;
 			this.column = column;
 			this.width = width;
 			this.height = height;
 			this.loadPath = loadPath;
+			this.initialAngle = initialAngle;
+		}
+		
+		protected double initialAngle() {
+			return initialAngle;
 		}
 		
 		protected String loadPath() {

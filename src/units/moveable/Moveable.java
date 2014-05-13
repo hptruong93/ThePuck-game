@@ -9,7 +9,7 @@ import utilities.geometry.Point;
 import ai.PathPlanner;
 import curse.CurseContainer;
 
-public class Moveable extends Unit {
+public abstract class Moveable extends Unit {
 	protected State state;
 	protected HashSet<CurseContainer> curses;
 	protected PathPlanner pathPlanner;

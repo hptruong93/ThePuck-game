@@ -1,6 +1,8 @@
 package utilities;
 
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +34,10 @@ public class SpriteSheetReader {
 	 * @param columnNumber the number of column of the sprite sheet
 	 * @param scaleWidth width of the desired output image
 	 * @param scaleHeight height of the desired output image
+	 * @param initialRotation angle in radian representing the bias of the image (standard image faces 0 to start with)
 	 * @return ArrayList of image of size [scaleWidth x scaleHeight] loaded from the sprite sheet
 	 */
-	public static ArrayList<Image> readImage(String dir, int instances, int columnNumber, int scaleWidth, int scaleHeight) {
+	public static ArrayList<Image> readImage(String dir, int instances, int columnNumber, int scaleWidth, int scaleHeight, double initialRotation) {
 		ArrayList<Image> output = new ArrayList<Image>();
 		
 		try {
@@ -47,7 +50,7 @@ public class SpriteSheetReader {
             int row = 0;
             
             while (true) {
-            	Image newly = img.getSubimage(column * width, row * height, width, height);
+            	BufferedImage newly = rotateImage(img.getSubimage(column * width, row * height, width, height), initialRotation);
             	output.add(newly.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_SMOOTH));
             	
             	column++;
@@ -64,5 +67,19 @@ public class SpriteSheetReader {
         	Log.writeLog(e);
         	return null;
         }
+	}
+	
+	/**
+	 * Return the rotation of the input image by an angle
+	 * @param input the original image
+	 * @param angle the angle by which the original image will be rotated in radian
+	 * @return the original image rotated by angle
+	 */
+	private static BufferedImage rotateImage(BufferedImage input, double angle) {
+		AffineTransform tx = AffineTransform.getRotateInstance(angle, input.getWidth()/2, input.getHeight()/2);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage output = op.filter(input, null);
+		
+		return output;
 	}
 }

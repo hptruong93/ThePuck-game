@@ -8,5 +8,4 @@ public class Arachnadus extends Boss {
 		super(position, health, speed, turnRate);
 		// TODO Auto-generated constructor stub
 	}
-
 }
