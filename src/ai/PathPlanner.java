@@ -22,10 +22,13 @@ public class PathPlanner {
 	public static final int FORCED_MOVE = 1;
 	public static final int NORMAL_NO_COLLISION = 2;
 	public static final int FORCED_NO_COLLISION = 3;
+	
+	private static final double PUSH_BACK_SPEED = 0.015;
+	
 	private final Moveable moveable;
 	private Unit previousTouch;
 	private double offset;
-	
+
 	public PathPlanner(Moveable moveable) {
 		this.moveable = moveable;
 	}
@@ -60,38 +63,56 @@ public class PathPlanner {
 	}
 
 	/**
-	 * Move the moveable with collision detection. The path planner will 
-	 * @param moveTime the time that the movement occurs in milliseconds
+	 * Move the moveable with collision detection. The path planner will
+	 * 
+	 * @param moveTime
+	 *            the time that the movement occurs in milliseconds
 	 */
 	private void moveWithCollision(int moveTime) {
 		Point initialPosition = moveable.position().clone();
-		moveNoCollision(moveTime);
-		
+
 		Unit collide = collide();
-		
-		if (collide != null) {//If there is anything on the way. Try to move perpendicular to it
-			if (collide != previousTouch) {//Choose a random direction
-				offset = Math.random() < 0.5 ? Math.PI/2 : -Math.PI/2;
+		if (collide != null) {
+			MovementState current = saveMovement();
+			double newAngle = initialPosition.angle(collide.position()) + Math.PI;
+			if (newAngle == Math.PI - Math.PI / 2) {
+				newAngle += Util.randomNegative(Math.PI/4);
 			}
 
-			Point currentDestination = moveable.destination().clone();
-			double destinationAngle = initialPosition.angle(currentDestination);
-			Point tempDestination = initialPosition.getFrontPoint(destinationAngle + offset, moveTime * moveable.speed());
-
-			moveable.setMovingAngle(destinationAngle);
-			moveable.setPosition(initialPosition.clone());
-			moveable.setDestination(tempDestination);
-			
-			moveWithCollision(moveTime);
-			
-			moveable.setDestination(currentDestination);
-			previousTouch = collide;
+			moveable.setSpeed(PUSH_BACK_SPEED);
+			moveable.setDestination(initialPosition.getFrontPoint(newAngle, moveTime * PUSH_BACK_SPEED));
+			moveNoCollision(moveTime);
+			loadMovement(current);
+			moveable.setDestination(moveable.position().clone());
 		} else {
-			offset = 0;
-			previousTouch = null;
+			moveNoCollision(moveTime);
+
+			collide = collide();
+			if (collide != null) {// If there is anything on the way. Try to
+									// move perpendicular to it
+				if (collide != previousTouch) {// Choose a random direction
+					offset = Math.random() < 4 ? Math.PI / 2 : -Math.PI / 2;
+				}
+
+				Point currentDestination = moveable.destination().clone();
+				double destinationAngle = initialPosition.angle(collide.position());
+				Point tempDestination = initialPosition.getFrontPoint(destinationAngle + offset, moveTime * moveable.speed());
+
+				moveable.setMovingAngle(destinationAngle);
+				moveable.setPosition(initialPosition.clone());
+				moveable.setDestination(tempDestination);
+
+				moveNoCollision(moveTime);
+
+				moveable.setDestination(currentDestination);
+				previousTouch = collide;
+			} else {
+				offset = 0;
+				previousTouch = null;
+			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -100,14 +121,14 @@ public class PathPlanner {
 		ResourceFinder collisionFinder = new ResourceFinder() {
 			@Override
 			protected boolean findingTest(Unit unit) {
-				if (moveable.collide(unit)) {
+				if (unit != moveable && moveable.collide(unit)) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 		};
-		
+
 		for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
 			Unit found = collisionFinder.findAll(i);
 			if (found != null) {
@@ -116,7 +137,7 @@ public class PathPlanner {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Move the moveable without considering any collision. First the path
 	 * planner will check if the moveable is facing the right direction. If not,
@@ -147,18 +168,40 @@ public class PathPlanner {
 		} else {
 			moveable.state().setMoving(true);
 		}
-		
+
 		if (Util.equal(destinationAngle, moveable.movingAngle())) {
 			moveable.setPosition(moveable.position().getFrontPoint(destinationAngle, moveDistance));
 		} else if (moveDistance != 0) {
 			double distance = Geometry.calculateTurnAngle(moveable.movingAngle(), destinationAngle);
-			
+
 			if (moveable.turnRate() * moveTime < Math.abs(distance)) {
 				moveable.setMovingAngle(moveable.movingAngle() + Math.signum(distance) * moveable.turnRate() * moveTime);
 			} else {
 				moveable.setMovingAngle(destinationAngle);
 				moveNoCollision(moveTime - Math.abs(distance) / moveable.turnRate());
 			}
+		}
+	}
+
+	private void loadMovement(MovementState state) {
+		moveable.setMovingAngle(state.movingAngle);
+		moveable.setDestination(state.destination);
+		moveable.setSpeed(state.speed);
+	}
+
+	private MovementState saveMovement() {
+		return new MovementState(moveable.speed(), moveable.movingAngle(), moveable.destination().clone());
+	}
+
+	private class MovementState {
+		private final double movingAngle;
+		private final Point destination;
+		private final double speed;
+
+		private MovementState(double speed, double movingAngle, Point destination) {
+			this.speed = speed;
+			this.movingAngle = movingAngle;
+			this.destination = destination;
 		}
 	}
 }

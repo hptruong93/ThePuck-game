@@ -13,23 +13,30 @@ import features.Clock;
 
 
 
+
 public class Main {
 	public static void main(String[] args) {
-		FrameMaster.getGameScreen().setVisible(true);
-		
 		/**
 		 * Start testing session
 		 */
-		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.02, 0.005);
+		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.02, 1);
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
-		Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.02, 0.005);
+		Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
 		GameMaster.addLiving(GameConfig.getPlayerID(), b);
+		
+		Sarcophagidae c = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
+		GameMaster.addLiving(GameConfig.getPlayerID(), c);
+		
+		Sarcophagidae d = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
+		GameMaster.addLiving(GameConfig.getPlayerID(), d);
+		
 		/**
 		 * End testing session
 		 */
 		
 		Clock.MASTER_CLOCK.start();
+		FrameMaster.getGameScreen().setVisible(true);
 		Clock.MASTER_CLOCK.scheduleFixedDelay(new GameGraphics(), 100, TimeUnit.MILLISECONDS);
 		Clock.MASTER_CLOCK.scheduleFixedDelay(new GameLogic(), 50, TimeUnit.MILLISECONDS);
 	}
