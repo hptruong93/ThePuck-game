@@ -2,9 +2,13 @@ package ai;
 
 import java.security.InvalidParameterException;
 
+import main.engineInterface.GameConfig;
+import main.engineInterface.ResourceFinder;
+import units.Unit;
 import units.moveable.Moveable;
 import utilities.Util;
 import utilities.geometry.Geometry;
+import utilities.geometry.Point;
 
 /**
  * This class controls all movement of units on the map. If a unit is moveable,
@@ -19,7 +23,9 @@ public class PathPlanner {
 	public static final int NORMAL_NO_COLLISION = 2;
 	public static final int FORCED_NO_COLLISION = 3;
 	private final Moveable moveable;
-
+	private Unit previousTouch;
+	private double offset;
+	
 	public PathPlanner(Moveable moveable) {
 		this.moveable = moveable;
 	}
@@ -58,7 +64,57 @@ public class PathPlanner {
 	 * @param moveTime the time that the movement occurs in milliseconds
 	 */
 	private void moveWithCollision(int moveTime) {
+		Point initialPosition = moveable.position().clone();
 		moveNoCollision(moveTime);
+		
+		Unit collide = collide();
+		
+		if (collide != null) {//If there is anything on the way. Try to move perpendicular to it
+			if (collide != previousTouch) {//Choose a random direction
+				offset = Math.random() < 0.5 ? Math.PI/2 : -Math.PI/2;
+			}
+
+			Point currentDestination = moveable.destination().clone();
+			double destinationAngle = initialPosition.angle(currentDestination);
+			Point tempDestination = initialPosition.getFrontPoint(destinationAngle + offset, moveTime * moveable.speed());
+
+			moveable.setMovingAngle(destinationAngle);
+			moveable.setPosition(initialPosition.clone());
+			moveable.setDestination(tempDestination);
+			
+			moveWithCollision(moveTime);
+			
+			moveable.setDestination(currentDestination);
+			previousTouch = collide;
+		} else {
+			offset = 0;
+			previousTouch = null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private Unit collide() {
+		ResourceFinder collisionFinder = new ResourceFinder() {
+			@Override
+			protected boolean findingTest(Unit unit) {
+				if (moveable.collide(unit)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+		
+		for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
+			Unit found = collisionFinder.findAll(i);
+			if (found != null) {
+				return found;
+			}
+		}
+		return null;
 	}
 	
 	/**

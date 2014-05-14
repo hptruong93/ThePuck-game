@@ -12,23 +12,24 @@ public class GameControl {
 
 	private Unit selectedUnit;
 	private final ReentrantReadWriteLock selectedUnitLock;
-	
+
 	private Point focus;
-	
+
 	{
 		selectedUnitLock = new ReentrantReadWriteLock();
-		focus = new Point(50,50);
+		focus = new Point(50, 50);
 	}
-	
+
 	public void mouseClicked(Point point, int modifier) {
 		try {
-		for (Living s :  GameMaster.getLivings(GameConfig.getPlayerID())) {
-			selectedUnit = s;
-			break;
-		}} finally {
+			for (Living s : GameMaster.getLivings(GameConfig.getPlayerID())) {
+				selectedUnit = s;
+				break;
+			}
+		} finally {
 			GameMaster.releaseLiving(GameConfig.getPlayerID());
 		}
-		
+
 		if (modifier == InputEvent.BUTTON1_MASK) {
 		} else if (modifier == InputEvent.BUTTON3_MASK) {
 			if (isControllingUnit()) {
@@ -38,7 +39,7 @@ public class GameControl {
 			}
 		}
 	}
-	
+
 	private boolean isControllingUnit() {
 		if (selectedUnit == null) {
 			return false;
@@ -62,13 +63,13 @@ public class GameControl {
 			return output;
 		}
 	}
-	
-	/**************Selected Unit****************/
+
+	/************** Selected Unit ****************/
 	public Unit getSelectedUnit() {
 		selectedUnitLock.readLock().lock();
 		return selectedUnit;
 	}
-	
+
 	public void setSelectedUnit(Unit newUnit) {
 		this.selectedUnitLock.writeLock().lock();
 		try {
@@ -77,12 +78,12 @@ public class GameControl {
 			this.selectedUnitLock.writeLock().unlock();
 		}
 	}
-	
-	/**************Focus************************/
+
+	/************** Focus ************************/
 	public Point focus() {
 		return focus;
 	}
-	
+
 	public void setFocus(Point newFocus) {
 		focus = newFocus;
 	}

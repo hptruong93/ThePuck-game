@@ -34,6 +34,8 @@ public abstract class Moveable extends Unit {
 		pathPlanner.move(moveTime, type);
 	}
 	
+	/*******************************************************/
+	
 	public Point destination() {
 		return destination;
 	}

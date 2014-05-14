@@ -2,6 +2,7 @@ package main.engineInterface;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import main.userInterface.FrameMaster;
 import units.immoveable.Building;
@@ -12,6 +13,8 @@ import features.Log;
 
 public class GameGraphics implements Runnable {
 
+	private static final AffineTransform DEFAULT_TRANSFORM = new AffineTransform();
+	
 	/**
 	 * Redraw the whole map. This should lead directly to the plotAll() method
 	 * below to be invoked.
@@ -34,7 +37,7 @@ public class GameGraphics implements Runnable {
 		try {
 			try {
 				for (VisualEffect effect : GameMaster.getVisualEffects()) {
-					effect.plot(a);
+					effect.plot(a, DEFAULT_TRANSFORM);
 				}
 			} finally {
 				GameMaster.releaseVisualEffect();
@@ -42,7 +45,7 @@ public class GameGraphics implements Runnable {
 
 			try {
 				for (AOE aoe : GameMaster.getAOEs()) {
-					aoe.plot(a);
+					aoe.plot(a, DEFAULT_TRANSFORM);
 				}
 			} finally {
 				GameMaster.releaseAOEs();
@@ -51,7 +54,7 @@ public class GameGraphics implements Runnable {
 			for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
 				try {
 					for (Moveable move : GameMaster.getLivings(i)) {
-						move.plot(a);
+						move.plot(a, DEFAULT_TRANSFORM);
 					}
 				} finally {
 					GameMaster.releaseLiving(i);
@@ -59,7 +62,7 @@ public class GameGraphics implements Runnable {
 
 				try {
 					for (Building building : GameMaster.getBuildings(i)) {
-						building.plot(a);
+						building.plot(a, DEFAULT_TRANSFORM);
 					}
 				} finally {
 					GameMaster.releaseBuilding(i);

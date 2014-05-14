@@ -34,7 +34,8 @@ public abstract class VisualAgent {
 	 * @param a graphics that will be used by the agent to plot.
 	 * @param owner the unit that will be plot
 	 */
-	public void plot(Graphics2D a, Unit owner) {
+	public void plot(Graphics2D a, AffineTransform defaultTransform, Unit owner) {
+		a.setTransform(defaultTransform);
 		Image next = getNextRep(owner);
 		int width = next.getWidth(null);
 		int height = next.getHeight(null);

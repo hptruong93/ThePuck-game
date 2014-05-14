@@ -23,6 +23,8 @@ public class Main {
 		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.02, 0.005);
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
+		Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.02, 0.005);
+		GameMaster.addLiving(GameConfig.getPlayerID(), b);
 		/**
 		 * End testing session
 		 */

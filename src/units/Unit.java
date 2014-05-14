@@ -1,6 +1,7 @@
 package units;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import utilities.geometry.Point;
 import agent.SoundAgent;
@@ -17,8 +18,12 @@ public abstract class Unit {
 		this.position = position;
 	}
 	
-	public void plot(Graphics2D a) {
-		visualAgent.plot(a, this);
+	public void plot(Graphics2D a, AffineTransform defaultTransform) {
+		visualAgent.plot(a, defaultTransform, this);
+	}
+	
+	public boolean collide(Unit other) {
+		return false;
 	}
 	
 	/**********************************************/
