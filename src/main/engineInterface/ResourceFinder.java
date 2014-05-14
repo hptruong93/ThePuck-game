@@ -32,6 +32,32 @@ public abstract class ResourceFinder {
 		return null;
 	}
 	
+	public Building findBuilding(int side) {
+		try {
+			for (Building building : GameMaster.getBuildings(side)) {
+				if (findingTest(building)) {
+					return building;
+				}
+			}
+		} finally {
+			GameMaster.releaseBuilding(side);
+		}
+		return null;
+	}
+	
+	public Living findLiving(int side) {
+		try {
+			for (Living living : GameMaster.getLivings(side)) {
+				if (findingTest(living)) {
+					return living;
+				}
+			}
+		} finally {
+			GameMaster.releaseLiving(side);
+		}
+		return null;
+	}
+	
 	public AOE findAOE() {
 		try {
 			for (AOE aoe : GameMaster.getAOEs()) {

@@ -8,7 +8,7 @@ import agent.SoundAgent;
 import agent.VisualAgent;
 
 public abstract class Unit {
-	private static final double DEFAULT_RADIUS = 5;
+	private static final double DEFAULT_RADIUS = 10;
 	
 	protected Point position;
 	protected double movingAngle;
@@ -16,7 +16,9 @@ public abstract class Unit {
 	protected SoundAgent soundAgent;
 	protected VisualAgent visualAgent;
 
-	public Unit(Point position) {
+	protected int side;
+	
+	public Unit(Point position, int side) {
 		this.position = position;
 	}
 	
@@ -48,9 +50,17 @@ public abstract class Unit {
 		return movingAngle;
 	}
 	
+	public double side() {
+		return side;
+	}
+	
 	/**********************************************/
 	
 	public void setPosition(Point position) {
 		this.position = position;
+	}
+	
+	public void setSide(int side) {
+		this.side = side;
 	}
 }

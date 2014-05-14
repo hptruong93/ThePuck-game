@@ -3,7 +3,6 @@ package agent;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.util.HashMap;
 
@@ -45,7 +44,7 @@ public abstract class VisualAgent {
 		AffineTransform transform = AffineTransform.getTranslateInstance(display.getX(), display.getY());
 		transform.rotate(owner.movingAngle());
 		a.transform(transform);
-		a.fill(new Ellipse2D.Double(-owner.radius(), -owner.radius(), 2 * owner.radius(), 2 * owner.radius()));
+//		a.fill(new Ellipse2D.Double(-owner.radius(), -owner.radius(), 2 * owner.radius(), 2 * owner.radius()));
 
 		AffineTransform flip = new AffineTransform();
 		if (owner.movingAngle() > Math.PI/2 && owner.movingAngle() < 3 * Math.PI / 2) {
@@ -53,7 +52,7 @@ public abstract class VisualAgent {
 		}
 		
 		flip.translate(-width / 2 , - height / 2);
-//		a.drawImage(next, flip, null);
+		a.drawImage(next, flip, null);
 	}
 	
 	protected abstract Image getNextRep(Unit owner);

@@ -5,8 +5,8 @@ import utilities.geometry.Point;
 
 public class AOE extends Untargetable {
 
-	public AOE(Point position, double speed, double turnRate) {
-		super(position, speed, turnRate);
+	public AOE(Point position, double speed, double turnRate, int side) {
+		super(position, speed, turnRate, side);
 		// TODO Auto-generated constructor stub
 	}
 

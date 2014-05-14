@@ -18,8 +18,8 @@ public abstract class Moveable extends Unit {
 	protected double speed;
 	protected double turnRate;
 	
-	public Moveable(Point position, double speed, double turnRate) {
-		super(position);
+	public Moveable(Point position, double speed, double turnRate, int side) {
+		super(position, side);
 		this.speed = speed;
 		this.turnRate = turnRate;
 		this.destination = position.clone();

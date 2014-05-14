@@ -1,6 +1,7 @@
 package units;
 
 
+
 public class State {
 	private boolean ethereal;
 	private boolean repel;
@@ -8,6 +9,7 @@ public class State {
 	private boolean silent;
 	/*********************/
 	private boolean moving;
+	private boolean transparent; //Transparent moveable moves with no collision
 	private boolean moveable;
 	
 	public State() {
@@ -28,6 +30,10 @@ public class State {
 	
 	public boolean isSilent() {
 		return silent;
+	}
+
+	public boolean isTransparent() {
+		return transparent;
 	}
 	
 	public boolean isMoving() {
@@ -54,6 +60,10 @@ public class State {
 	
 	public synchronized void setSilent(boolean silent) {
 		this.silent = silent;
+	}
+	
+	public synchronized void setTransparent(boolean transparent) {
+		this.transparent = transparent;
 	}
 	
 	public synchronized void setMoving(boolean moving) {

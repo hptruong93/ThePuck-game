@@ -19,17 +19,13 @@ public class Main {
 		/**
 		 * Start testing session
 		 */
-		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.02, 1);
+		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.04, 1);
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
-		Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
-		GameMaster.addLiving(GameConfig.getPlayerID(), b);
-		
-		Sarcophagidae c = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
-		GameMaster.addLiving(GameConfig.getPlayerID(), c);
-		
-		Sarcophagidae d = new Sarcophagidae(new Point(100, 100), 100, 0.02, 1);
-		GameMaster.addLiving(GameConfig.getPlayerID(), d);
+		for (int i = 0; i < 5; i++) {
+			Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.04, 1);
+			GameMaster.addLiving(GameConfig.getPlayerID(), b);
+		}
 		
 		/**
 		 * End testing session

@@ -69,6 +69,11 @@ public class PathPlanner {
 	 *            the time that the movement occurs in milliseconds
 	 */
 	private void moveWithCollision(int moveTime) {
+		if (moveable.state().isTransparent()) {
+			moveNoCollision(moveTime);
+			return;
+		}
+		
 		Point initialPosition = moveable.position().clone();
 
 		Unit collide = collide();
