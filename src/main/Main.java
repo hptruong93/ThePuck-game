@@ -7,6 +7,7 @@ import main.engineInterface.GameGraphics;
 import main.engineInterface.GameLogic;
 import main.engineInterface.GameMaster;
 import main.userInterface.FrameMaster;
+import units.moveable.livings.Living;
 import units.moveable.livings.boss.Sarcophagidae;
 import utilities.geometry.Point;
 import features.Clock;
@@ -19,11 +20,13 @@ public class Main {
 		/**
 		 * Start testing session
 		 */
-		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), 100, 0.04, 1);
+		Living.InitConfig config = new Living.InitConfig(100, 100, 0.1, 0.04, 1);
+		
+		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), config, GameConfig.getPlayerID());
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
 		
 		for (int i = 0; i < 5; i++) {
-			Sarcophagidae b = new Sarcophagidae(new Point(100, 100), 100, 0.04, 1);
+			Sarcophagidae b = new Sarcophagidae(new Point(100, 100), config, GameConfig.getPlayerID());
 			GameMaster.addLiving(GameConfig.getPlayerID(), b);
 		}
 		

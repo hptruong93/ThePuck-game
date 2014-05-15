@@ -5,8 +5,8 @@ import agent.RyskorVisualAgent;
 
 public class Ryskor extends Boss{
 
-	public Ryskor(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Ryskor(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		this.visualAgent = new RyskorVisualAgent();
 	}
 }

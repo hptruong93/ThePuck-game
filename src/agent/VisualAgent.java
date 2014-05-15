@@ -57,23 +57,23 @@ public abstract class VisualAgent {
 	
 	protected abstract Image getNextRep(Unit owner);
 	
-	public static final HashMap<String, InitConfiguration> INIT_CONFIG;
+	public static final HashMap<String, InitConfig> INIT_CONFIG;
 	
 	static {
-		INIT_CONFIG = new HashMap<String, InitConfiguration>();
+		INIT_CONFIG = new HashMap<String, InitConfig>();
 		JsonRootNode root = FileUtility.readJSON(new File(INIT_FILE));
 		for (JsonStringNode node : root.getFields().keySet()) {
-			INIT_CONFIG.put(node.getText(), new InitConfiguration(root.getFields().get(node)));
+			INIT_CONFIG.put(node.getText(), new InitConfig(root.getFields().get(node)));
 		}
 	}
 	
-	protected static class InitConfiguration {
+	protected static class InitConfig {
 		
 		private final int instances, column, width, height;
 		private final double initialAngle;
 		private final String loadPath;
 		
-		private InitConfiguration(JsonNode info) {
+		private InitConfig(JsonNode info) {
 			this.instances = Integer.parseInt(info.getNumberValue("instances"));
 			this.column = Integer.parseInt(info.getNumberValue("columnNumber"));
 			
@@ -92,7 +92,7 @@ public abstract class VisualAgent {
 			this.initialAngle = Math.toRadians(Double.parseDouble(info.getNumberValue("initialAngle")));
 		}
 		
-		private InitConfiguration(String loadPath, int instances, int column, int width, int height, double initialAngle) {
+		private InitConfig(String loadPath, int instances, int column, int width, int height, double initialAngle) {
 			this.instances = instances;
 			this.column = column;
 			this.width = width;

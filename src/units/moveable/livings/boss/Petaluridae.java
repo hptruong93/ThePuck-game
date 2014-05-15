@@ -4,8 +4,8 @@ import utilities.geometry.Point;
 
 public class Petaluridae extends Boss{
 
-	public Petaluridae(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Petaluridae(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		// TODO Auto-generated constructor stub
 	}
 }

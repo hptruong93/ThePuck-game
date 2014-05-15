@@ -5,8 +5,8 @@ import agent.PuckVisualAgent;
 
 public class Puck extends Boss {
 
-	public Puck(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Puck(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		this.visualAgent = new PuckVisualAgent(); 
 	}
 }

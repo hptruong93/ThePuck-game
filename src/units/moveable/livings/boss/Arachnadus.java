@@ -4,8 +4,8 @@ import utilities.geometry.Point;
 
 public class Arachnadus extends Boss {
 
-	public Arachnadus(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Arachnadus(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		// TODO Auto-generated constructor stub
 	}
 }

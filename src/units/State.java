@@ -2,11 +2,16 @@ package units;
 
 
 
+
 public class State {
 	private boolean ethereal;
 	private boolean repel;
 	private boolean invulnerable;
 	private boolean silent;
+	/*********************/
+	private double magicResistance;
+	private double physicalResistance;
+	
 	/*********************/
 	private boolean moving;
 	private boolean transparent; //Transparent moveable moves with no collision
@@ -44,6 +49,14 @@ public class State {
 		return moveable;
 	}
 	
+	public double magicResistance() {
+		return magicResistance;
+	}
+	
+	public double physicalResistance() {
+		return physicalResistance;
+	}
+	
 	/***********************************************************/
 	
 	public synchronized void setEthereal(boolean ethereal) {
@@ -72,6 +85,14 @@ public class State {
 	
 	public synchronized void setMoveable(boolean moveable) {
 		this.moveable = moveable;
+	}
+	
+	public synchronized void setMagicResistance(double magicResistance) {
+		this.magicResistance = magicResistance;
+	}
+	
+	public synchronized void setPhysicalResistance(double physicalResistance) {
+		this.physicalResistance = physicalResistance;
 	}
 	
 	/***********************************************************/

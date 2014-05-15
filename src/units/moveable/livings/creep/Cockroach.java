@@ -6,8 +6,8 @@ import agent.CockroachVisualAgent;
 
 public class Cockroach extends Creep {
 
-	public Cockroach(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Cockroach(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		this.visualAgent = new CockroachVisualAgent();
 		// TODO Auto-generated constructor stub
 	}

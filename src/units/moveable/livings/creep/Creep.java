@@ -5,8 +5,8 @@ import utilities.geometry.Point;
 
 public abstract class Creep extends Living {
 
-	public Creep(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Creep(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		// TODO Auto-generated constructor stub
 	}
 

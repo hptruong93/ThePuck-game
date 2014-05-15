@@ -11,7 +11,7 @@ public class ArchonVisualAgent extends VisualAgent {
 	private static ArrayList<Image> images;
 	
 	static {
-		InitConfiguration init = VisualAgent.INIT_CONFIG.get(ArchonVisualAgent.class.getSimpleName());
+		InitConfig init = VisualAgent.INIT_CONFIG.get(ArchonVisualAgent.class.getSimpleName());
 		images = SpriteSheetReader.readImage(init.loadPath(), init.instances(),init.column(), init.width(), init.height(), init.initialAngle());
 	}
 	

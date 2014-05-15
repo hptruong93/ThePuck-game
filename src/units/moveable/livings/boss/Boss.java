@@ -6,8 +6,8 @@ import utilities.geometry.Point;
 
 public abstract class Boss extends Living {
 
-	public Boss(Point position, double health, double speed, double turnRate) {
-		super(position, health, speed, turnRate);
+	public Boss(Point position, InitConfig config, int side) {
+		super(position, config, side);
 		// TODO Auto-generated constructor stub
 	}
 }

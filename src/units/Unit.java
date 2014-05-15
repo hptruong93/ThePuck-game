@@ -8,7 +8,7 @@ import agent.SoundAgent;
 import agent.VisualAgent;
 
 public abstract class Unit {
-	private static final double DEFAULT_RADIUS = 10;
+	private static final double DEFAULT_RADIUS = 15;
 	
 	protected Point position;
 	protected double movingAngle;
