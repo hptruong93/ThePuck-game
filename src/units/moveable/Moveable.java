@@ -29,12 +29,16 @@ public abstract class Moveable extends Unit {
 	}
 	
 	/*******************************************************/
-	
+	/**
+	 * Move the unit using the path planner
+	 * @param moveTime the time that the movement occurs (in milliseconds)
+	 * @param type movement type. See PathPlanner class for the constants
+	 */
 	public void move(int moveTime, int type) {
 		pathPlanner.move(moveTime, type);
 	}
 	
-	/*******************************************************/
+	/*******************Getters*****************************/
 	
 	public Point destination() {
 		return destination;
@@ -52,7 +56,7 @@ public abstract class Moveable extends Unit {
 		return state;
 	}
 	
-	/*******************************************************/
+	/*******************Setters*****************************/
 	
 	public void setDestination(Point destination) {
 		this.destination = destination;

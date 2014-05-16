@@ -1,5 +1,14 @@
 package units.moveable.livings;
 
+/**
+ * Class encapsulating one instance of damage/ healing to the unit.
+ * This includes
+ * 1) The damage (negative damage means healing)
+ * 2) The type of damage/ healing
+ * 3) The source of the damage.
+ * @author VDa
+ *
+ */
 public class Damage {
 	public static final int PHYSICAL = 0;
 	public static final int MAGIC = 1;

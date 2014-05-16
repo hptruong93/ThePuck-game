@@ -5,7 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 
 import units.moveable.livings.Living;
-import agent.VisualAgent;
+import agent.visualAgent.VisualAgent;
 
 public class CurseContainer {
 	private HashSet<Curse> content;

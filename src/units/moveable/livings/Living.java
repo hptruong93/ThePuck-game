@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import units.moveable.Moveable;
+import units.moveable.untargetable.passiveInteractive.projectile.ProjectileGenerator;
 import utilities.FileUtility;
 import utilities.geometry.Point;
 import argo.jdom.JsonNode;
@@ -12,7 +13,8 @@ import argo.jdom.JsonStringNode;
 
 public abstract class Living extends Moveable {
 	private static final String INIT_FILE = "data\\init\\Living.json";
-	protected static final HashMap<String, InitConfig> INIT_CONFIG; 
+	protected static final HashMap<String, InitConfig> INIT_CONFIG;
+	protected ProjectileGenerator projectileFactory;
 	protected HpManager hp;
 	
 	public Living(Point position, InitConfig config, int side) {

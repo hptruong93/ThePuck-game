@@ -1,7 +1,7 @@
 package units.moveable.livings.boss;
 
 import utilities.geometry.Point;
-import agent.PuckVisualAgent;
+import agent.visualAgent.living.PuckVisualAgent;
 
 public class Puck extends Boss {
 

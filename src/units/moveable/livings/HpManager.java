@@ -1,5 +1,12 @@
 package units.moveable.livings;
 
+/**
+ * Class encapsulating the hit point information of a unit.
+ * This class provides interface to assess damage dealt to the unit
+ * based on its state, and the hit point regeneration of the unit.
+ * @author VDa
+ *
+ */
 public class HpManager {
 	private final Living owner;
 	private double regen;
@@ -13,8 +20,12 @@ public class HpManager {
 		this.regen = regen;
 	}
 	
+	/**
+	 * Regenerate the unit by an amount. This based on the regen of the unit and its state.
+	 * This is equivalent to apply a PURE type healing to the unit
+	 */
 	public void regen() {
-		setHealth(health + regen);
+		damage(new Damage(-regen, Damage.PURE, null));
 	}
 	
 	public double damage(Damage damage) {

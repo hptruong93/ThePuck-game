@@ -9,6 +9,7 @@ import main.engineInterface.GameMaster;
 import main.userInterface.FrameMaster;
 import units.moveable.livings.Living;
 import units.moveable.livings.boss.Sarcophagidae;
+import units.moveable.untargetable.passiveInteractive.projectile.SarcophagidaeProjectile;
 import utilities.geometry.Point;
 import features.Clock;
 
@@ -22,13 +23,17 @@ public class Main {
 		 */
 		Living.InitConfig config = new Living.InitConfig(100, 100, 0.1, 0.04, 1);
 		
-		Sarcophagidae a = new Sarcophagidae(new Point(50, 50), config, GameConfig.getPlayerID());
+		Sarcophagidae a = new Sarcophagidae(new Point(150, 150), config, GameConfig.getPlayerID());
 		GameMaster.addLiving(GameConfig.getPlayerID(), a);
+//		
+//		for (int i = 0; i < 5; i++) {
+//			Sarcophagidae b = new Sarcophagidae(new Point(100, 100), config, GameConfig.getPlayerID());
+//			GameMaster.addLiving(GameConfig.getPlayerID(), b);
+//		}
 		
-		for (int i = 0; i < 5; i++) {
-			Sarcophagidae b = new Sarcophagidae(new Point(100, 100), config, GameConfig.getPlayerID());
-			GameMaster.addLiving(GameConfig.getPlayerID(), b);
-		}
+		SarcophagidaeProjectile test = new SarcophagidaeProjectile(null, a,  new Point(20, 20), 1, 0);
+		GameMaster.addProjectile(test);
+		test.start();
 		
 		/**
 		 * End testing session

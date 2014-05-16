@@ -1,8 +1,10 @@
-package agent;
+package agent.visualAgent.living;
 
 import java.awt.Image;
 import java.util.ArrayList;
 
+import agent.visualAgent.VisualAgent;
+import agent.visualAgent.VisualAgent.InitConfig;
 import units.Unit;
 import units.moveable.Moveable;
 import utilities.SpriteSheetReader;

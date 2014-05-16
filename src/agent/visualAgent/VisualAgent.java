@@ -1,4 +1,4 @@
-package agent;
+package agent.visualAgent;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -55,19 +55,50 @@ public abstract class VisualAgent {
 		a.drawImage(next, flip, null);
 	}
 	
+	/**
+	 * Get next Image to plot. This should reflects the motion and actions of the Unit
+	 * @param owner the Unit that the agent is representing
+	 * @return the next Image to plot
+	 */
 	protected abstract Image getNextRep(Unit owner);
 	
 	public static final HashMap<String, InitConfig> INIT_CONFIG;
 	
+	/**
+	 * Load the initial configuration into a hash map. Other visual agents
+	 * will use this hash map to initialize. The hash map should have the keys
+	 * representing the name of all the visual agents, the the values indicating
+	 * the init configuration of each agent.
+	 */
 	static {
 		INIT_CONFIG = new HashMap<String, InitConfig>();
+//		JsonRootNode root = FileUtility.readJSON(new File(INIT_FILE));
+//		for (JsonStringNode node : root.getFields().keySet()) {
+//			INIT_CONFIG.put(node.getText(), new InitConfig(root.getFields().get(node)));
+//		}
+		
 		JsonRootNode root = FileUtility.readJSON(new File(INIT_FILE));
 		for (JsonStringNode node : root.getFields().keySet()) {
-			INIT_CONFIG.put(node.getText(), new InitConfig(root.getFields().get(node)));
+			JsonNode object = root.getFields().get(node);
+			for (JsonStringNode className : object.getFields().keySet()) {
+				INIT_CONFIG.put(className.getText(), new InitConfig(object.getFields().get(className)));
+			}
 		}
 	}
 	
-	protected static class InitConfig {
+	/**
+	 * Class encapsulating initial configuration to load sprite sheet.
+	 * This includes:
+	 * 1) Number of instances in the sprite sheet
+	 * 2) Number of column of images in the sprite sheet
+	 * 3) The final width of one instance (after being scaled)
+	 * 4) The final height of one instance (after being scaled)
+	 * 5) The angle at which the image is rotated originally (standard image should face along the x axis)
+	 * 6) The path to the image to load
+	 * @author VDa
+	 *
+	 */
+	public static class InitConfig {
 		
 		private final int instances, column, width, height;
 		private final double initialAngle;
@@ -101,27 +132,27 @@ public abstract class VisualAgent {
 			this.initialAngle = initialAngle;
 		}
 		
-		protected double initialAngle() {
+		public double initialAngle() {
 			return initialAngle;
 		}
 		
-		protected String loadPath() {
+		public String loadPath() {
 			return loadPath;
 		}
 		
-		protected int instances() {
+		public int instances() {
 			return instances;
 		}
 		
-		protected int column() {
+		public int column() {
 			return column;
 		}
 		
-		protected int width() {
+		public int width() {
 			return width;
 		}
 		
-		protected int height() {
+		public int height() {
 			return height;
 		}
 	}

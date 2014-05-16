@@ -1,0 +1,8 @@
+{
+	"DEFAULT_PROCESSING_TIME": 100,
+	"SarcophagidaeProjectile": {
+		"speed": 0.02,
+		"turnRate": 1,
+		"damageType": "PHYSICAL"
+	}
+}

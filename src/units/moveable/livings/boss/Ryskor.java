@@ -1,7 +1,7 @@
 package units.moveable.livings.boss;
 
 import utilities.geometry.Point;
-import agent.RyskorVisualAgent;
+import agent.visualAgent.living.RyskorVisualAgent;
 
 public class Ryskor extends Boss{
 

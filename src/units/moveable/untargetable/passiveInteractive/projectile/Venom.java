@@ -5,8 +5,8 @@ import utilities.geometry.Point;
 
 public class Venom extends Projectile {
 
-	public Venom(Living owner, Point position, double damage, InitConfig config, int side) {
-		super(owner, position, damage, config, side);
+	public Venom(Living owner, Point position, Point target, double damage, InitConfig config, int side) {
+		super(owner, position, target, damage, config, side);
 		// TODO Auto-generated constructor stub
 	}
 

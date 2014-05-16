@@ -17,6 +17,9 @@ import java.util.concurrent.TimeUnit;
 public class Clock implements Runnable {
 
 	   public static final Clock MASTER_CLOCK = new Clock();
+	   public static final int STOPPED_ID = Integer.MAX_VALUE;
+	   public static final int FAILURE_ID = Integer.MAX_VALUE - 1;
+	   public static final int NOT_STARTED_ID = -1;
 	   private long time;
 	   private ScheduledThreadPoolExecutor mainClock;
 	   private static int IDCounter;
@@ -36,7 +39,8 @@ public class Clock implements Runnable {
 	   private Clock() {
 	      time = START_TIME;
 	      this.interval = DEFAULT_INTERVAL;
-	      scheduler = new ScheduledThreadPoolExecutor(50);
+	      scheduler = new ScheduledThreadPoolExecutor(30);
+	      scheduler.setMaximumPoolSize(50);
 	      mainClock = new ScheduledThreadPoolExecutor(1);
 	      waitingTasks = new LinkedList<>();
 	      scheduledTasks = new HashMap<>();
@@ -122,11 +126,15 @@ public class Clock implements Runnable {
 	    * Remove a task from list of scheduled tasks. The scheduled task will be stopped,
 	    * but will not be interrupted if running.
 	    * @param id id of the task provided previously by the Clock interface
+	    * @return DEFAULT_STOPPED_ID
 	    */
-	   synchronized public void removeScheduledTask(int id) {//Remove a task that has been scheduled periodically
+	   synchronized public int removeScheduledTask(int id) {//Remove a task that has been scheduled periodically
 	      if (scheduledTasks.containsKey(id)) {
 	         scheduledTasks.get(id).cancel(false);
 	         scheduledTasks.remove(id);
+	         return STOPPED_ID;
+	      } else {
+	    	  return FAILURE_ID;
 	      }
 	   }
 

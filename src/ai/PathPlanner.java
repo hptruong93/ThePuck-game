@@ -13,7 +13,9 @@ import utilities.geometry.Point;
 /**
  * This class controls all movement of units on the map. If a unit is moveable,
  * it has to have an instance of this class as an attribute.
- * 
+ * </br>
+ * The unit mentioned in context of this class refers to the moveable that this
+ * Path planner is controlling.
  * @author VDa
  * 
  */
@@ -63,7 +65,13 @@ public class PathPlanner {
 	}
 
 	/**
-	 * Move the moveable with collision detection. The path planner will
+	 * Move the moveable with collision detection. If the movement without collision
+	 * brings the unit to collision with another unit, the path planner will
+	 * attempt to move perpendicular to the collided unit.
+	 * </br>
+	 * This method also resolves situation where the current unit is already collided
+	 * with another unit before it attempts to move. The planner simply pushes the two
+	 * further away. 
 	 * 
 	 * @param moveTime
 	 *            the time that the movement occurs in milliseconds
@@ -119,8 +127,8 @@ public class PathPlanner {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Get a unit that is colliding with this unit.
+	 * @return A unit that is colliding with this unit
 	 */
 	private Unit collide() {
 		ResourceFinder collisionFinder = new ResourceFinder() {
@@ -188,16 +196,38 @@ public class PathPlanner {
 		}
 	}
 
+	/**
+	 * Load a movement state back on the unit
+	 * @param state the state that will be loaded
+	 * @see MovementState class
+	 */
 	private void loadMovement(MovementState state) {
 		moveable.setMovingAngle(state.movingAngle);
 		moveable.setDestination(state.destination);
 		moveable.setSpeed(state.speed);
 	}
 
+	/**
+	 * Save a movement state of the unit
+	 * @return a saved instance of the movement state
+	 */
 	private MovementState saveMovement() {
 		return new MovementState(moveable.speed(), moveable.movingAngle(), moveable.destination().clone());
 	}
 
+	/**
+	 * Movement state of the unit.
+	 * This includes 
+	 * 1) The destination of the unit
+	 * 2) The angle at which the unit is facing
+	 * 3) The speed at which the unit is moving
+	 * </br>
+	 * The position of the unit is irrelevant to the context. Therefore it would not
+	 * be included.
+	 * 
+	 * @author VDa
+	 *
+	 */
 	private class MovementState {
 		private final double movingAngle;
 		private final Point destination;

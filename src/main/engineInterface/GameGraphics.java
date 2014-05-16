@@ -8,6 +8,7 @@ import main.userInterface.FrameMaster;
 import units.immoveable.Building;
 import units.moveable.Moveable;
 import units.moveable.untargetable.passiveInteractive.AOE;
+import units.moveable.untargetable.passiveInteractive.projectile.Projectile;
 import units.moveable.untargetable.visualEffect.VisualEffect;
 import features.Log;
 
@@ -35,22 +36,6 @@ public class GameGraphics implements Runnable {
 		Graphics2D a = (Graphics2D) g;
 
 		try {
-			try {
-				for (VisualEffect effect : GameMaster.getVisualEffects()) {
-					effect.plot(a, DEFAULT_TRANSFORM);
-				}
-			} finally {
-				GameMaster.releaseVisualEffect();
-			}
-
-			try {
-				for (AOE aoe : GameMaster.getAOEs()) {
-					aoe.plot(a, DEFAULT_TRANSFORM);
-				}
-			} finally {
-				GameMaster.releaseAOEs();
-			}
-
 			for (int i = 0; i < GameConfig.SIDE_COUNT; i++) {
 				try {
 					for (Moveable move : GameMaster.getLivings(i)) {
@@ -67,6 +52,30 @@ public class GameGraphics implements Runnable {
 				} finally {
 					GameMaster.releaseBuilding(i);
 				}
+			}
+
+			try {
+				for (Projectile projectile : GameMaster.getProjectiles()) {
+					projectile.plot(a, DEFAULT_TRANSFORM);
+				}
+			} finally {
+				GameMaster.releaseProjectiles();
+			}
+			
+			try {
+				for (VisualEffect effect : GameMaster.getVisualEffects()) {
+					effect.plot(a, DEFAULT_TRANSFORM);
+				}
+			} finally {
+				GameMaster.releaseVisualEffect();
+			}
+
+			try {
+				for (AOE aoe : GameMaster.getAOEs()) {
+					aoe.plot(a, DEFAULT_TRANSFORM);
+				}
+			} finally {
+				GameMaster.releaseAOEs();
 			}
 		} catch (Exception e) {
 			Log.writeLog(e);

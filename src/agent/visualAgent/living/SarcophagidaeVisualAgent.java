@@ -1,16 +1,18 @@
-package agent;
+package agent.visualAgent.living;
 
 import java.awt.Image;
 import java.util.ArrayList;
 
+import agent.visualAgent.VisualAgent;
+import agent.visualAgent.VisualAgent.InitConfig;
 import units.Unit;
 import utilities.SpriteSheetReader;
 
-public class PuckVisualAgent extends VisualAgent {
+public class SarcophagidaeVisualAgent extends VisualAgent {
 	private static ArrayList<Image> images;
 
 	static {
-		InitConfig init = VisualAgent.INIT_CONFIG.get(PuckVisualAgent.class.getSimpleName());
+		InitConfig init = VisualAgent.INIT_CONFIG.get(SarcophagidaeVisualAgent.class.getSimpleName());
 		images = SpriteSheetReader.readImage(init.loadPath(), init.instances(), init.column(), init.width(), init.height(), init.initialAngle());
 	}
 
