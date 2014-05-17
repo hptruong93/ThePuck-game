@@ -15,6 +15,17 @@ public class Util {
 	}
 	
 	/**
+	 * Check if two doubles are equal based on some threshold.
+	 * @param a first double
+	 * @param b second double
+	 * @param threshold comparison threshold
+	 * @return if two doubles are equal using the threshold
+	 */
+	public static boolean equal(double a, double b, double threshold) {
+		return Math.abs(a - b) < threshold;
+	}
+	
+	/**
     *
     * @param range
     * @return random number from 0 to range

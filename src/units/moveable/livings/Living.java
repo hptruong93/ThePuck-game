@@ -3,29 +3,58 @@ package units.moveable.livings;
 import java.io.File;
 import java.util.HashMap;
 
+import main.engineInterface.GameConfig;
+import units.Unit;
 import units.moveable.Moveable;
 import units.moveable.untargetable.passiveInteractive.projectile.ProjectileGenerator;
 import utilities.FileUtility;
 import utilities.geometry.Point;
+import ai.AutoAttack;
+import ai.MovementAI;
 import argo.jdom.JsonNode;
 import argo.jdom.JsonRootNode;
 import argo.jdom.JsonStringNode;
 
 public abstract class Living extends Moveable {
 	private static final String INIT_FILE = "data\\init\\Living.json";
-	protected static final HashMap<String, InitConfig> INIT_CONFIG;
+	public static final HashMap<String, InitConfig> INIT_CONFIG;
+	
+	private Unit targeted;
 	protected ProjectileGenerator projectileFactory;
+	protected AutoAttack attackAI;
+	protected AttackManager attackManager;
+	protected MovementAI movementAI;
 	protected HpManager hp;
 	
 	public Living(Point position, InitConfig config, int side) {
 		super(position, config.speed, config.turnRate, side);
 		hp = new HpManager(this, config.health, config.maxHealth, config.regen);
+		attackManager = new AttackManager(this, config.damage, config.attackSpeed, config.attackRange);
+		
+		if (side == GameConfig.AI_SIDE) {
+			attackAI = new AutoAttack(this);
+			attackAI.start();
+			
+			movementAI = new MovementAI(this);
+			movementAI.start();
+		}
 	}
 	
 	public HpManager hp() {
 		return hp;
 	}
 	
+	public AttackManager attackAgent() {
+		return attackManager;
+	}
+	
+	public Unit targeted() {
+		return targeted;
+	}
+	
+	public void setTargeted(Unit targeted) {
+		this.targeted = targeted;
+	}
 	/************************************************************************************/
 	static {
 		INIT_CONFIG = new HashMap<String, InitConfig>();
@@ -43,6 +72,8 @@ public abstract class Living extends Moveable {
 		protected final double speed;
 		protected final double turnRate;
 		protected final double attackSpeed;
+		protected final double damage;
+		protected final double attackRange;
 		
 		public InitConfig(JsonNode info) {
 			health = Double.parseDouble(info.getNumberValue("maxHealth"));
@@ -50,16 +81,9 @@ public abstract class Living extends Moveable {
 			regen = Double.parseDouble(info.getNumberValue("regen"));
 			speed = Double.parseDouble(info.getNumberValue("speed"));
 			turnRate = Double.parseDouble(info.getNumberValue("turnRate"));
-			attackSpeed = 0;
-		}
-		
-		public InitConfig(double health, double maxHealth, double regen, double speed, double turnRate) {
-			this.health = health;
-			this.maxHealth = maxHealth;
-			this.regen = regen;
-			this.speed = speed;
-			this.turnRate = turnRate;
-			this.attackSpeed = 0;
+			damage = Double.parseDouble(info.getNullableNumberValue("damage"));
+			attackSpeed = 1 / Double.parseDouble(info.getNullableNumberValue("attackSpeed"));
+			attackRange = Double.parseDouble(info.getNullableNumberValue("attackRange"));
 		}
 	}
 }

@@ -20,6 +20,7 @@ public abstract class Unit {
 	
 	public Unit(Point position, int side) {
 		this.position = position;
+		this.side = side;
 	}
 	
 	/**
@@ -55,6 +56,14 @@ public abstract class Unit {
 		return DEFAULT_RADIUS;
 	}
 	
+	public double distance(Unit other) {
+		return position.distance(other.position);
+	}
+	
+	public double angle(Unit other) {
+		return position.angle(other.position);
+	}
+	
 	/**********************Getters*******************************************************/
 	public Point position() {
 		return position;
@@ -64,7 +73,7 @@ public abstract class Unit {
 		return movingAngle;
 	}
 	
-	public double side() {
+	public int side() {
 		return side;
 	}
 	

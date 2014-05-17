@@ -1,5 +1,6 @@
 package units.moveable.untargetable.passiveInteractive.projectile;
 
+import units.Unit;
 import units.moveable.livings.Living;
 import utilities.geometry.Point;
 
@@ -11,7 +12,7 @@ public class Venom extends Projectile {
 	}
 
 	@Override
-	protected Projectile clone() {
+	protected Projectile clone(Unit target) {
 		// TODO Auto-generated method stub
 		return null;
 	}

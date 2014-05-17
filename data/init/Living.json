@@ -2,10 +2,13 @@
 	"Creep": {
 		"Cockroach": {
 			"name": "Puck",
-			"maxHealth": 100,
+			"maxHealth": 500,
 			"regen": 0.1,
 			"speed": 0.04,
-			"turnRate": 1
+			"turnRate": 1,
+			"damage": 50,
+			"attackSpeed": 2,
+			"attackRange": 15,
 		}
 	},
 	"Boss": {
@@ -14,14 +17,20 @@
 			"maxHealth": 1000,
 			"regen": 1,
 			"speed": 0.04,
-			"turnRate": 0.05
+			"turnRate": 0.05,
+			"damage": 100,
+			"attackSpeed": 2,
+			"attackRange": 15,
 		},
 		"Sarcophagidae": {
 			"name": "Sarcophagidae",
 			"maxHealth": 1000,
 			"regen": 1,
 			"speed": 0.04,
-			"turnRate": 0.01
+			"turnRate": 0.01,
+			"damage": 75,
+			"attackSpeed": 1,
+			"attackRange": 100,
 		}
 	}
 }

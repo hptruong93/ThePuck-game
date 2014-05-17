@@ -18,8 +18,9 @@ import argo.jdom.JsonNode;
 import argo.jdom.JsonRootNode;
 import argo.jdom.JsonStringNode;
 import features.Clock;
+import features.ReactiveRunnable;
 
-public abstract class Projectile extends Untargetable implements Runnable {
+public abstract class Projectile extends Untargetable implements Runnable, ReactiveRunnable {
 
 	private static final String INIT_FILE = "data\\init\\Projectile.json";
 	private static int DEFAULT_PROCESSING_TIME;
@@ -70,6 +71,7 @@ public abstract class Projectile extends Untargetable implements Runnable {
 		}
 	}
 
+	@Override
 	public void start() {
 		if (id > 0) {
 			throw new IllegalStateException("Already started projectile...");
@@ -77,7 +79,8 @@ public abstract class Projectile extends Untargetable implements Runnable {
 		id = Clock.MASTER_CLOCK.scheduleFixedDelay(this, DEFAULT_PROCESSING_TIME, TimeUnit.MILLISECONDS);
 	}
 	
-	private void stop() {
+	@Override
+	public void stop() {
 		GameMaster.removeProjectile(this);
 		id = Clock.MASTER_CLOCK.removeScheduledTask(id);
 	}
@@ -88,12 +91,12 @@ public abstract class Projectile extends Untargetable implements Runnable {
 	 * to ignore any activity of the runnable once the  
 	 * @return
 	 */
-	private boolean isStopped() {
+	@Override
+	public boolean isStopped() {
 		return id == Clock.STOPPED_ID || id == Clock.FAILURE_ID;
 	}
 	
-	@Override
-	protected abstract Projectile clone();
+	protected abstract Projectile clone(Unit target);
 
 	protected void damageLiving(Living living) {
 		Damage toDeal = new Damage(damage, type, owner);
@@ -104,6 +107,15 @@ public abstract class Projectile extends Untargetable implements Runnable {
 
 	}
 
+	public void setDamage(double damage) {
+		this.damage = damage;
+	}
+	
+	@Override
+	public double radius() {
+		return 0;
+	}
+	
 	/***********************************************************************/
 	static {
 		DEFAULT_PROCESSING_TIME = -1;
